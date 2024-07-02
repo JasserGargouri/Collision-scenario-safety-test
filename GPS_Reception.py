@@ -9,28 +9,32 @@ app = Flask(__name__)
 latest_data_1 = {
     "latitude": None,
     "longitude": None,
-    "elevation": None
+    "elevation": None,
+    "speed": None
 }
 
 latest_data_2 = {
     "latitude": None,
     "longitude": None,
-    "elevation": None
+    "elevation": None,
+    "speed": None
 }
 
 # Update the latest GPS data for device 1
-def update_latest_data_1(latitude, longitude, elevation=None):
+def update_latest_data_1(latitude, longitude, elevation=None, speed=None):
     global latest_data_1
     latest_data_1["latitude"] = latitude
     latest_data_1["longitude"] = longitude
     latest_data_1["elevation"] = elevation
+    latest_data_1["speed"] = speed
 
 # Update the latest GPS data for device 2
-def update_latest_data_2(latitude, longitude, elevation=None):
+def update_latest_data_2(latitude, longitude, elevation=None, speed=None):
     global latest_data_2
     latest_data_2["latitude"] = latitude
     latest_data_2["longitude"] = longitude
     latest_data_2["elevation"] = elevation
+    latest_data_2["speed"] = speed
 
 # Parse NMEA sentence for device 1
 def parse_nmea_sentence_1(sentence):
@@ -45,8 +49,9 @@ def parse_nmea_sentence_1(sentence):
         elif isinstance(msg, pynmea2.types.talker.RMC):
             latitude = msg.latitude
             longitude = msg.longitude
-            update_latest_data_1(latitude, longitude)
-            print(f"Device 1 - Latitude: {latitude}, Longitude: {longitude}")
+            speed = msg.spd_over_grnd  # Speed over ground in knots
+            update_latest_data_1(latitude, longitude, speed=speed)
+            print(f"Device 1 - Latitude: {latitude}, Longitude: {longitude}, Speed: {speed}")
     except pynmea2.ParseError as e:
         print(f"Parse error: {e}")
 
@@ -63,8 +68,9 @@ def parse_nmea_sentence_2(sentence):
         elif isinstance(msg, pynmea2.types.talker.RMC):
             latitude = msg.latitude
             longitude = msg.longitude
-            update_latest_data_2(latitude, longitude)
-            print(f"Device 2 - Latitude: {latitude}, Longitude: {longitude}")
+            speed = msg.spd_over_grnd  # Speed over ground in knots
+            update_latest_data_2(latitude, longitude, speed=speed)
+            print(f"Device 2 - Latitude: {latitude}, Longitude: {longitude}, Speed: {speed}")
     except pynmea2.ParseError as e:
         print(f"Parse error: {e}")
 
@@ -136,4 +142,4 @@ def gps_data_2():
     return jsonify(latest_data_2)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True)

@@ -21,8 +21,8 @@
             maxZoom: 18,
         }).addTo(map);
 
-        let marker1 = L.marker([0, 0], { color: 'blue' }).addTo(map);
-        let marker2 = L.marker([0, 0], { color: 'red' }).addTo(map);
+        let marker1 = L.marker([0, 0], {color: 'blue'}).addTo(map);
+        let marker2 = L.marker([0, 0], {color: 'red'}).addTo(map);
 
         async function updateMap() {
             const response1 = await fetch('/gps_data_1');
@@ -31,6 +31,7 @@
             if (data1.latitude !== null && data1.longitude !== null) {
                 const latLng1 = [data1.latitude, data1.longitude];
                 marker1.setLatLng(latLng1);
+                console.log(`Device 1 - Latitude: ${data1.latitude}, Longitude: ${data1.longitude}, Elevation: ${data1.elevation}, Speed: ${data1.speed}`);
             }
 
             const response2 = await fetch('/gps_data_2');
@@ -39,6 +40,7 @@
             if (data2.latitude !== null && data2.longitude !== null) {
                 const latLng2 = [data2.latitude, data2.longitude];
                 marker2.setLatLng(latLng2);
+                console.log(`Device 2 - Latitude: ${data2.latitude}, Longitude: ${data2.longitude}, Elevation: ${data2.elevation}, Speed: ${data2.speed}`);
             }
         }
 
