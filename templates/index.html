@@ -21,15 +21,24 @@
             maxZoom: 18,
         }).addTo(map);
 
-        let marker = L.marker([0, 0]).addTo(map);
+        let marker1 = L.marker([0, 0], { color: 'blue' }).addTo(map);
+        let marker2 = L.marker([0, 0], { color: 'red' }).addTo(map);
 
         async function updateMap() {
-            const response = await fetch('/gps_data');
-            const data = await response.json();
+            const response1 = await fetch('/gps_data_1');
+            const data1 = await response1.json();
 
-            if (data.latitude !== null && data.longitude !== null) {
-                const latLng = [data.latitude, data.longitude];
-                marker.setLatLng(latLng);
+            if (data1.latitude !== null && data1.longitude !== null) {
+                const latLng1 = [data1.latitude, data1.longitude];
+                marker1.setLatLng(latLng1);
+            }
+
+            const response2 = await fetch('/gps_data_2');
+            const data2 = await response2.json();
+
+            if (data2.latitude !== null && data2.longitude !== null) {
+                const latLng2 = [data2.latitude, data2.longitude];
+                marker2.setLatLng(latLng2);
             }
         }
 
