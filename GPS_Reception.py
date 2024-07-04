@@ -32,6 +32,7 @@ def update_latest_data_1(latitude, longitude, elevation=None, speed=None):
     latest_data_1["elevation"] = elevation
     latest_data_1["speed"] = speed
     check_for_collision()
+    print(f"Device 1 - Latitude: {latitude}, Longitude: {longitude}, Elevation: {elevation}, Speed: {speed}")
 
 # Update the latest GPS data for device 2
 def update_latest_data_2(latitude, longitude, elevation=None, speed=None):
@@ -41,6 +42,7 @@ def update_latest_data_2(latitude, longitude, elevation=None, speed=None):
     latest_data_2["elevation"] = elevation
     latest_data_2["speed"] = speed
     check_for_collision()
+    print(f"Device 2 - Latitude: {latitude}, Longitude: {longitude}, Elevation: {elevation}, Speed: {speed}")
 
 # Check for collision based on the latest data
 def check_for_collision():
@@ -88,36 +90,36 @@ def haversine_distance(lat1, lon1, lat2, lon2):
 def parse_nmea_sentence_1(sentence):
     try:
         msg = pynmea2.parse(sentence.strip())
-        if isinstance(msg, pynmea2.types.talker.GGA):
-            latitude = msg.latitude
-            longitude = msg.longitude
-            elevation = msg.altitude
-            update_latest_data_1(latitude, longitude, elevation)
-            print(f"Device 1 - Latitude: {latitude}, Longitude: {longitude}, Elevation: {elevation}")
-        elif isinstance(msg, pynmea2.types.talker.RMC):
+        # if isinstance(msg, pynmea2.types.talker.GGA):
+        #     latitude = msg.latitude
+        #     longitude = msg.longitude
+        #     elevation = msg.altitude
+        #     update_latest_data_1(latitude, longitude, elevation)
+        #     # print(f"Device 1 - Latitude: {latitude}, Longitude: {longitude}, Elevation: {elevation}")
+        if isinstance(msg, pynmea2.types.talker.RMC):
             latitude = msg.latitude
             longitude = msg.longitude
             speed = msg.spd_over_grnd * 1.852  # Speed over ground in km/h (1 knot = 1.852 km/h)
             update_latest_data_1(latitude, longitude, speed=speed)
-            print(f"Device 1 - Latitude: {latitude}, Longitude: {longitude}, Speed: {speed}")
+            # print(f"Device 1 - Latitude: {latitude}, Longitude: {longitude}, Speed: {speed}")
     except pynmea2.ParseError as e:
         print(f"Parse error: {e}")
 
 def parse_nmea_sentence_2(sentence):
     try:
         msg = pynmea2.parse(sentence.strip())
-        if isinstance(msg, pynmea2.types.talker.GGA):
-            latitude = msg.latitude
-            longitude = msg.longitude
-            elevation = msg.altitude
-            update_latest_data_2(latitude, longitude, elevation)
-            print(f"Device 2 - Latitude: {latitude}, Longitude: {longitude}, Elevation: {elevation}")
-        elif isinstance(msg, pynmea2.types.talker.RMC):
+        # if isinstance(msg, pynmea2.types.talker.GGA):
+        #     latitude = msg.latitude
+        #     longitude = msg.longitude
+        #     elevation = msg.altitude
+        #     update_latest_data_2(latitude, longitude, elevation)
+        #     print(f"Device 2 - Latitude: {latitude}, Longitude: {longitude}, Elevation: {elevation}")
+        if isinstance(msg, pynmea2.types.talker.RMC):
             latitude = msg.latitude
             longitude = msg.longitude
             speed = msg.spd_over_grnd * 1.852  # Speed over ground in km/h (1 knot = 1.852 km/h)
             update_latest_data_2(latitude, longitude, speed=speed)
-            print(f"Device 2 - Latitude: {latitude}, Longitude: {longitude}, Speed: {speed}")
+            # print(f"Device 2 - Latitude: {latitude}, Longitude: {longitude}, Speed: {speed}")
     except pynmea2.ParseError as e:
         print(f"Parse error: {e}")
 
