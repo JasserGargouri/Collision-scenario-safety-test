@@ -49,8 +49,8 @@ def check_for_collision():
     global collision_alert
 
     # Define the cross-section coordinates
-    cross_section_lat = 0  # Update with actual coordinates
-    cross_section_lon = 0  # Update with actual coordinates
+    cross_section_lat = 44.805489  # Update with actual coordinates
+    cross_section_lon = -0.604658  # Update with actual coordinates
 
     # Calculate distances and times to cross-section for both devices
     def calculate_distance_and_time(lat1, lon1, speed):
@@ -196,8 +196,8 @@ def collision_alert_endpoint():
 @app.route('/crossing_times')
 def crossing_times():
     # Define the cross-section coordinates
-    cross_section_lat = 44.8  # Update with actual coordinates
-    cross_section_lon = -0.6  # Update with actual coordinates
+    cross_section_lat = 44.805489  # Update with actual coordinates
+    cross_section_lon = -0.604658  # Update with actual coordinates
 
     # Calculate distances and times to cross-section for both devices
     def calculate_distance_and_time(lat1, lon1, speed):
