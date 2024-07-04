@@ -38,6 +38,7 @@
             <p id="device2Time">Time: N/A</p>
             <p id="device2Speed">Speed: N/A</p>
         </div>
+        <button id="resetButton">Reset Lines</button>
     </div>
     <div id="map"></div>
     <script>
@@ -59,6 +60,12 @@
             })
         }).addTo(map).bindPopup("Cross Section");
 
+        let device1Path = [];
+        let device2Path = [];
+
+        let device1Polyline = L.polyline([], {color: 'blue'}).addTo(map);
+        let device2Polyline = L.polyline([], {color: 'red'}).addTo(map);
+
         async function updateMap() {
             const response1 = await fetch('/gps_data_1');
             const data1 = await response1.json();
@@ -66,6 +73,8 @@
             if (data1.latitude !== null && data1.longitude !== null) {
                 const latLng1 = [data1.latitude, data1.longitude];
                 marker1.setLatLng(latLng1);
+                device1Path.push(latLng1);
+                device1Polyline.setLatLngs(device1Path);
                 console.log(`Device 1 - Latitude: ${data1.latitude}, Longitude: ${data1.longitude}, Elevation: ${data1.elevation}, Speed: ${data1.speed}`);
                 document.getElementById('device1Speed').textContent = `Speed: ${data1.speed} km/h`;
             }
@@ -76,6 +85,8 @@
             if (data2.latitude !== null && data2.longitude !== null) {
                 const latLng2 = [data2.latitude, data2.longitude];
                 marker2.setLatLng(latLng2);
+                device2Path.push(latLng2);
+                device2Polyline.setLatLngs(device2Path);
                 console.log(`Device 2 - Latitude: ${data2.latitude}, Longitude: ${data2.longitude}, Elevation: ${data2.elevation}, Speed: ${data2.speed}`);
                 document.getElementById('device2Speed').textContent = `Speed: ${data2.speed} km/h`;
             }
@@ -91,6 +102,13 @@
             document.getElementById('device1Time').textContent = `Time: ${timesData.device_1.time ? timesData.device_1.time.toFixed(2) : 'N/A'} seconds`;
             document.getElementById('device2Distance').textContent = `Distance: ${timesData.device_2.distance ? timesData.device_2.distance.toFixed(2) : 'N/A'} meters`;
             document.getElementById('device2Time').textContent = `Time: ${timesData.device_2.time ? timesData.device_2.time.toFixed(2) : 'N/A'} seconds`;
+        
+            document.getElementById('resetButton').addEventListener('click', () => {
+            device1Path = [];
+            device2Path = [];
+            device1Polyline.setLatLngs([]);
+            device2Polyline.setLatLngs([]);
+        });
         }
 
         setInterval(updateMap, 1000);
