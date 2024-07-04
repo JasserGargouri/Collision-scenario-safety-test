@@ -7,12 +7,38 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
     <style>
+        body {
+            display: flex;
+            flex-direction: row;
+        }
+        #info {
+            flex: 1;
+            padding: 20px;
+        }
         #map {
+            flex: 1;
             height: 100vh;
         }
     </style>
 </head>
 <body>
+    <div id="info">
+        <h2>Collision Alert</h2>
+        <p id="collisionAlert">No collision alerts</p>
+        <h2>Crossing Times</h2>
+        <div>
+            <h3>Device 1</h3>
+            <p id="device1Distance">Distance: N/A</p>
+            <p id="device1Time">Time: N/A</p>
+            <p id="device1Speed">Speed: N/A</p>
+        </div>
+        <div>
+            <h3>Device 2</h3>
+            <p id="device2Distance">Distance: N/A</p>
+            <p id="device2Time">Time: N/A</p>
+            <p id="device2Speed">Speed: N/A</p>
+        </div>
+    </div>
     <div id="map"></div>
     <script>
         const map = L.map('map').setView([0, 0], 2);
@@ -32,6 +58,7 @@
                 const latLng1 = [data1.latitude, data1.longitude];
                 marker1.setLatLng(latLng1);
                 console.log(`Device 1 - Latitude: ${data1.latitude}, Longitude: ${data1.longitude}, Elevation: ${data1.elevation}, Speed: ${data1.speed}`);
+                document.getElementById('device1Speed').textContent = `Speed: ${data1.speed} km/h`;
             }
 
             const response2 = await fetch('/gps_data_2');
@@ -41,7 +68,20 @@
                 const latLng2 = [data2.latitude, data2.longitude];
                 marker2.setLatLng(latLng2);
                 console.log(`Device 2 - Latitude: ${data2.latitude}, Longitude: ${data2.longitude}, Elevation: ${data2.elevation}, Speed: ${data2.speed}`);
+                document.getElementById('device2Speed').textContent = `Speed: ${data2.speed} km/h`;
             }
+
+            const responseAlert = await fetch('/collision_alert');
+            const alertData = await responseAlert.json();
+            document.getElementById('collisionAlert').textContent = alertData.alert || 'No collision alerts';
+
+            const responseTimes = await fetch('/crossing_times');
+            const timesData = await responseTimes.json();
+
+            document.getElementById('device1Distance').textContent = `Distance: ${timesData.device_1.distance ? timesData.device_1.distance.toFixed(2) : 'N/A'} meters`;
+            document.getElementById('device1Time').textContent = `Time: ${timesData.device_1.time ? timesData.device_1.time.toFixed(2) : 'N/A'} seconds`;
+            document.getElementById('device2Distance').textContent = `Distance: ${timesData.device_2.distance ? timesData.device_2.distance.toFixed(2) : 'N/A'} meters`;
+            document.getElementById('device2Time').textContent = `Time: ${timesData.device_2.time ? timesData.device_2.time.toFixed(2) : 'N/A'} seconds`;
         }
 
         setInterval(updateMap, 1000);
