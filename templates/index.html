@@ -19,6 +19,7 @@
             flex: 4;
             height: 100vh;
         }
+        img.huechange { filter: hue-rotate(120deg); }
     </style>
 </head>
 <body>
@@ -51,6 +52,7 @@
 
         let marker1 = L.marker([0, 0], {color: 'blue'}).addTo(map);
         let marker2 = L.marker([0, 0], {color: 'red'}).addTo(map);
+        marker2._icon.classList.add("huechange");
         let crossSectionMarker = L.marker(crossSectionLatLng, {
             icon: L.icon({
                 iconUrl: 'https://png.pngtree.com/png-vector/20220621/ourmid/pngtree-section-symbol-architectural-illustration-plan-png-image_5239607.png', // URL to a custom marker icon
@@ -111,7 +113,7 @@
         });
         }
 
-        setInterval(updateMap, 1000);
+        setInterval(updateMap, 100);
     </script>
 </body>
 </html>
