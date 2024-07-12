@@ -49,8 +49,8 @@ def check_for_collision():
     global collision_alert
 
     # Define the cross-section coordinates
-    cross_section_lat = 44.805489  # Update with actual coordinates
-    cross_section_lon = -0.604658  # Update with actual coordinates
+    cross_section_lat = 44.805642  # Update with actual coordinates
+    cross_section_lon = -0.604730  # Update with actual coordinates
 
     # Calculate distances and times to cross-section for both devices
     def calculate_distance_and_time(lat1, lon1, speed):
@@ -125,7 +125,7 @@ def parse_nmea_sentence_2(sentence):
 
 # Telnet connection functions (functions unchanged)
 def connect_to_gps_1():
-    HOST = '192.168.65.102'  # IP address of your first GPS device
+    HOST = '192.168.146.34'  # IP address of your first GPS device
     PORT = 8080  # Port number for the TCP server on your first GPS device
 
     try:
@@ -148,7 +148,7 @@ def connect_to_gps_1():
         tn.close()
 
 def connect_to_gps_2():
-    HOST = '192.168.65.34'  # IP address of your second GPS device
+    HOST = '192.168.146.144'  # IP address of your second GPS device
     PORT = 8080  # Port number for the TCP server on your second GPS device
 
     try:
@@ -196,8 +196,8 @@ def collision_alert_endpoint():
 @app.route('/crossing_times')
 def crossing_times():
     # Define the cross-section coordinates
-    cross_section_lat = 44.805489  # Update with actual coordinates
-    cross_section_lon = -0.604658  # Update with actual coordinates
+    cross_section_lat = 44.805642  # Update with actual coordinates
+    cross_section_lon = -0.604730  # Update with actual coordinates
 
     # Calculate distances and times to cross-section for both devices
     def calculate_distance_and_time(lat1, lon1, speed):
@@ -220,4 +220,4 @@ def crossing_times():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
